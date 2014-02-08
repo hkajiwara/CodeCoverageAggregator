@@ -57,7 +57,6 @@ public class CodeCoverageAggregator {
 		if (args.length == 1) {
 			PROPFILE = args[0];
 		}
-		
 		CodeCoverageAggregator cca = new CodeCoverageAggregator(PROPFILE);
 		cca.run();
 	}
@@ -71,7 +70,7 @@ public class CodeCoverageAggregator {
 		LoginResult loginResult = ptnLogin(userInfo[0], userInfo[1], authEndpoint);
 		if (mdLogin(loginResult)) {
 			DeployResult deployResult = deployZip(deployFile);
-			if (deployResult != null && deployResult.isSuccess()) {
+			if (deployResult.getNumberTestErrors() == 0) {
 				Util.showResultAsTable(calcCoverage(deployResult));
 			}
 		}

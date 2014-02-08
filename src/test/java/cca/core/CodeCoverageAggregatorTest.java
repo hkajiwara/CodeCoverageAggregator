@@ -195,7 +195,7 @@ public class CodeCoverageAggregatorTest {
 		DeployResult deployResult = sut.deployZip(deployFile);
 		
 		// Verify
-		if (deployResult != null && deployResult.isSuccess()) {
+		if (deployResult.getNumberTestErrors() == 0) {
 			Util.showResultAsTable(sut.calcCoverage(deployResult));
 		}
 
