@@ -42,7 +42,6 @@ public class CodeCoverageAggregatorTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testCodeCoverageAggregator() throws Exception {
 		// Setup
 		
@@ -63,7 +62,6 @@ public class CodeCoverageAggregatorTest {
     }
 	
 	@Test
-	@Ignore
 	public void testGetUserInfo() throws Exception {
 		// Setup
 		String[] userInfo = {"user1", "pass1"};
@@ -83,7 +81,6 @@ public class CodeCoverageAggregatorTest {
 	}
 
 	@Test
-	@Ignore
 	public void testPtnLogin() throws Exception {
 		// Setup
 		CodeCoverageAggregator sut = new CodeCoverageAggregator(PROPFILE);
@@ -98,7 +95,6 @@ public class CodeCoverageAggregatorTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testMdLogin() throws Exception {
 		// Setup
 		CodeCoverageAggregator sut = new CodeCoverageAggregator(PROPFILE);
@@ -115,7 +111,6 @@ public class CodeCoverageAggregatorTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testDeployZip() throws Exception {
 		// Setup
 		CodeCoverageAggregator sut = new CodeCoverageAggregator(PROPFILE);
@@ -132,7 +127,6 @@ public class CodeCoverageAggregatorTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testCoverageCalc() throws Exception {
 		// Setup
 		CodeCoverageAggregator sut = new CodeCoverageAggregator(PROPFILE);
@@ -150,7 +144,6 @@ public class CodeCoverageAggregatorTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testCoverageBean() throws Exception {
 		// Setup
 		CoverageBean sut = new CoverageBean();
@@ -185,6 +178,7 @@ public class CodeCoverageAggregatorTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testRun() throws Exception {
 		// Setup
 		CodeCoverageAggregator sut = new CodeCoverageAggregator(PROPFILE);
