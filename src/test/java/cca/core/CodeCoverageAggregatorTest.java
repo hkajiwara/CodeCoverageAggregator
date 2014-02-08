@@ -132,6 +132,7 @@ public class CodeCoverageAggregatorTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testCoverageCalc() throws Exception {
 		// Setup
 		CodeCoverageAggregator sut = new CodeCoverageAggregator(PROPFILE);
@@ -144,7 +145,6 @@ public class CodeCoverageAggregatorTest {
 		
 		// Verify
 		assertThat(actual, is(notNullValue()));
-		Util.showResultAsTable(actual);
 
 		// TearDown
 	}
@@ -181,6 +181,24 @@ public class CodeCoverageAggregatorTest {
 		assertThat(sut.getCoverage(), is(coverage));
 		assertThat(sut.getCodeLocation()[0].getColumn(), is(culumn));
 		
+		// TearDown
+	}
+	
+	@Test
+	public void testRun() throws Exception {
+		// Setup
+		CodeCoverageAggregator sut = new CodeCoverageAggregator(PROPFILE);
+		
+		// Exercise
+		LoginResult loginResult = sut.ptnLogin(username, password, authEndpoint);
+		sut.mdLogin(loginResult);
+		DeployResult deployResult = sut.deployZip(deployFile);
+		
+		// Verify
+		if (deployResult != null && deployResult.isSuccess()) {
+			Util.showResultAsTable(sut.calcCoverage(deployResult));
+		}
+
 		// TearDown
 	}
 }

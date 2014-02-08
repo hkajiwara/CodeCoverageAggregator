@@ -3,6 +3,7 @@ package cca.core;
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -65,12 +66,14 @@ public class CodeCoverageAggregator {
 	 * Run
 	 * @throws Exception
 	 */
-	protected void run() throws Exception {
+	protected void run() {
 		String[] userInfo = getUserInfo();
 		LoginResult loginResult = ptnLogin(userInfo[0], userInfo[1], authEndpoint);
 		if (mdLogin(loginResult)) {
 			DeployResult deployResult = deployZip(deployFile);
-			Util.showResultAsTable(calcCoverage(deployResult));
+			if (deployResult != null && deployResult.isSuccess()) {
+				Util.showResultAsTable(calcCoverage(deployResult));
+			}
 		}
 	}
 	
@@ -137,7 +140,8 @@ public class CodeCoverageAggregator {
 	 * @return deployResult
 	 * @throws Exception
 	 */
-	protected DeployResult deployZip(String _deployFile) throws Exception {
+	protected DeployResult deployZip(String _deployFile) {
+		DeployResult deployResult = null;
 		byte zipBytes[] = Util.readZipFile(_deployFile);
 
 		DeployOptions deployOptions = new DeployOptions();
@@ -146,13 +150,19 @@ public class CodeCoverageAggregator {
 		deployOptions.setRunAllTests(true);
 		deployOptions.setCheckOnly(true);
 
-		AsyncResult asyncResult = mdConnection.deploy(zipBytes, deployOptions);
-		DeployResult deployResult = waitForDeployCompletion(asyncResult.getId());
-		if (!deployResult.isSuccess()) {
-			printErrors(deployResult, "Final list of failures:\n");
-			throw new Exception("The files were not successfully deployed");
+		try {
+			AsyncResult asyncResult = mdConnection.deploy(zipBytes, deployOptions);
+			deployResult = waitForDeployCompletion(asyncResult.getId());
+			printResult(deployResult);
+			
+			if (!deployResult.isSuccess()) {
+				printErrors(deployResult, "Final list of failures:\n");
+			}
+		} catch (ConnectionException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
 		return deployResult;
 	}
 	
@@ -291,5 +301,26 @@ public class CodeCoverageAggregator {
 			errorMessageBuilder.insert(0, messageHeader);
 			System.out.println(errorMessageBuilder.toString());
 		}
+	}
+	
+	/**
+	 * Show the result
+	 * @param deployResult
+	 */
+	protected void printResult(DeployResult deployResult) {
+		System.out.println("\n");
+		System.out.println("[Result]");
+		
+		RunTestsResult runTestResults = deployResult.getDetails().getRunTestResult();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		
+		System.out.println("- DeployId       : " + deployResult.getId());
+		System.out.println("- Start Date     : " + sdf.format(deployResult.getStartDate().getTime()));
+		System.out.println("- Completed Date : " + sdf.format(deployResult.getCompletedDate().getTime()));
+		System.out.println("- Total time(ms) : " + runTestResults.getTotalTime());
+		System.out.println("- #Tests         : " + runTestResults.getNumTestsRun());
+		System.out.println("- #Failures      : " + runTestResults.getNumFailures());
+		System.out.println("- Status         : " + deployResult.getStatus());
+		System.out.println("- Success?       : " + deployResult.isSuccess());
 	}
 }
