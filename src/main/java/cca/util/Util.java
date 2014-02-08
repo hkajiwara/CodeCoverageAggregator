@@ -49,7 +49,14 @@ public class Util {
 		return bos.toByteArray();
 	}
 	
+	/**
+	 * Show code coverage of each Apex as table format
+	 * @param coverageBeanList
+	 */
 	public static void showResultAsTable(List<CoverageBean> coverageBeanList) {
+		int totalCoveredLine = 0;
+		int totalShouldCoverLine = 0;
+		
 		System.out.println("\n");
 		System.out.println("[Code Coverage]");
 		System.out.printf("%-18s  %16s  %16s  %9s%n", "ClassName", "#CoveredLine", "#ShouldCoverLine", "%Coverage");
@@ -60,6 +67,15 @@ public class Util {
 			System.out.printf("%18d", coverageBean.getShouldCoverLine());
 			System.out.printf("%11d", coverageBean.getCoverage());
 			System.out.println("");
+			
+			totalCoveredLine += coverageBean.getCoveredLine();
+			totalShouldCoverLine += coverageBean.getShouldCoverLine();
 		}
+		System.out.printf("%-18s  %16s  %16s  %9s%n", "------------------", "------------", "----------------", "---------");
+		System.out.printf("%-18s", "Overall coverage");
+		System.out.printf("%18d", totalCoveredLine);
+		System.out.printf("%18d", totalShouldCoverLine);
+		System.out.printf("%11d", (int)((totalCoveredLine/(double)totalShouldCoverLine)*100));
+		System.out.println("\n");
 	}
 }

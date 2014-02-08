@@ -51,7 +51,6 @@ public class CodeCoverageAggregator {
 	/**
 	 * Main
 	 * @param args
-	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws Exception {
 		if (args.length == 1) {
@@ -63,7 +62,6 @@ public class CodeCoverageAggregator {
 	
 	/**
 	 * Run
-	 * @throws Exception
 	 */
 	protected void run() {
 		String[] userInfo = getUserInfo();

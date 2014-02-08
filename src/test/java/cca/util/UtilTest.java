@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -21,7 +20,6 @@ public class UtilTest {
 	public TemporaryFolder tempFolder = new TemporaryFolder();
 
 	@Test
-	@Ignore
 	public void testReadZipFile() throws IOException {
 		// SetUp
 		String fileName = "src/test/resources/deploy.zip";
